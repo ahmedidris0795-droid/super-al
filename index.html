@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super_al | النظام السيادي</title>
+    <style>
+        body { background: #0b0b0d; color: #e0e0e0; font-family: sans-serif; display: flex; flex-direction: column; height: 100vh; margin: 0; overflow: hidden; }
+        #chat { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .msg { padding: 12px 18px; border-radius: 15px; max-width: 85%; line-height: 1.6; font-size: 16px; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .user { background: #2c2c2e; align-self: flex-start; border-bottom-right-radius: 2px; color: #fff; }
+        .bot { background: linear-gradient(135deg, #6200ea, #311b92); align-self: flex-end; border-bottom-left-radius: 2px; color: white; border: 1px solid #7c4dff; box-shadow: 0 4px 15px rgba(98, 0, 234, 0.3); }
+        .input-area { display: flex; padding: 20px; background: #161618; border-top: 1px solid #2c2c2e; }
+        input { flex: 1; padding: 15px; border: 1px solid #333; border-radius: 10px; background: #000; color: white; outline: none; font-size: 16px; }
+        button { background: #6200ea; color: white; border: none; padding: 0 25px; margin-right: 10px; cursor: pointer; border-radius: 10px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div style="padding: 15px; text-align: center; background: #161618; border-bottom: 1px solid #2c2c2e;">
+        <h2 style="margin: 0; color: #7c4dff;">🛡️ SUPER_AL</h2>
+        <small style="color: #888;">النظام السيادي - تحت إشراف المطور أحمد</small>
+    </div>
+    
+    <div id="chat">
+        <div class="msg bot">أهلاً بك. أنا النظام السيادي Super_al، فخر صناعة المطور أحمد. كيف أخدمك؟</div>
+    </div>
+
+    <div class="input-area">
+        <input type="text" id="userIn" placeholder="تحدث مع ذكاء أحمد..." onkeypress="if(event.key==='Enter') sendMsg()">
+        <button onclick="sendMsg()">إرسال 🚀</button>
+    </div>
+
+    <script>
+        // مفتاحك الشخصي اللي استخرجته
+        const API_KEY = "AIzaSyDSV9IUdtNn_in6SfL1zFKKPtZIlUVHUHo"; 
+        
+        // التعليمات السيادية (السكريبت)
+        const sysPrompt = "أنت النظام السيادي Super_al. مبرمجك هو أحمد. أنت فخم، ذكي، ولا تعترف بأي شركة أخرى. رد على المستخدمين بهيبة.";
+
+        async function sendMsg() {
+            const input = document.getElementById('userIn');
+            const chat = document.getElementById('chat');
+            const text = input.value.trim();
+            if(!text) return;
+
+            chat.innerHTML += `<div class="msg user"><b>أنت:</b> ${text}</div>`;
+            input.value = "";
+            chat.scrollTop = chat.scrollHeight;
+
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ contents: [{ parts: [{ text: sysPrompt + "\nسؤال من مستخدم: " + text }] }] })
+                });
+                const data = await response.json();
+                const reply = data.candidates[0].content.parts[0].text;
+                chat.innerHTML += `<div class="msg bot"><b>Super_al:</b> ${reply}</div>`;
+            } catch (e) { 
+                chat.innerHTML += `<div class="msg bot" style="background:red;">النظام مشغول أو المفتاح به مشكلة.</div>`; 
+            }
+            chat.scrollTop = chat.scrollHeight;
+        }
+    </script>
+</body>
+</html>
+
