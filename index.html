@@ -2,75 +2,71 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Super_al Ultra | نظام أحمد</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super_al | نظام أحمد</title>
     <style>
-        body { background: #050505; color: #f0f0f0; font-family: sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-        .header { padding: 15px; text-align: center; background: #111; border-bottom: 2px solid #6200ea; box-shadow: 0 2px 10px rgba(98,0,234,0.3); }
-        #chat { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; padding-bottom: 120px; }
-        .msg { padding: 14px 20px; border-radius: 18px; max-width: 85%; font-size: 16px; line-height: 1.6; }
-        .user { background: #1e1e20; align-self: flex-start; border: 1px solid #333; }
-        .bot { background: linear-gradient(135deg, #6200ea, #311b92); align-self: flex-end; border: 1px solid #7c4dff; box-shadow: 0 4px 15px rgba(98,0,234,0.4); }
-        .input-area { position: fixed; bottom: 0; left: 0; right: 0; padding: 15px; background: #0a0a0a; border-top: 1px solid #222; display: flex; justify-content: center; z-index: 9999; }
-        .input-wrapper { display: flex; width: 100%; max-width: 900px; gap: 10px; align-items: center; }
-        input { flex: 1; padding: 15px; border-radius: 12px; border: 1px solid #444; background: #111; color: white; outline: none; }
-        .btn { background: #6200ea; color: white; border: none; padding: 12px 20px; border-radius: 12px; cursor: pointer; font-weight: bold; }
+        body { background: #050505; color: white; font-family: sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; }
+        #chat { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 10px; padding-bottom: 100px; }
+        .msg { padding: 12px; border-radius: 15px; max-width: 80%; line-height: 1.5; }
+        .user { background: #222; align-self: flex-start; }
+        .bot { background: #6200ea; align-self: flex-end; }
+        .input-area { position: fixed; bottom: 0; width: 100%; background: #111; padding: 15px; display: flex; gap: 10px; border-top: 1px solid #333; }
+        input { flex: 1; padding: 12px; border-radius: 8px; border: none; background: #000; color: white; }
+        button { background: #6200ea; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <div class="header">
-        <h2 style="margin:0;">🛡️ SUPER_AL ULTRA</h2>
-        <small style="color:#888;">نظام الذكاء العالمي - مطور بواسطة العبقري أحمد</small>
+    <div style="padding:15px; text-align:center; background:#111; border-bottom:1px solid #6200ea;">
+        <b>🛡️ SUPER_AL - المطور أحمد</b>
     </div>
-    <div id="chat">
-        <div class="msg bot">مرحباً بك في عالم أحمد. أنا Super_al Ultra، أقوى ذكاء اصطناعي الآن. أرسل لي أي شيء أو صورة وسأحللها لك فوراً!</div>
-    </div>
+    <div id="chat"><div class="msg bot">النظام جاهز. أنا Super_al بذكاء أحمد الحقيقي. اسألني أو أرسل صورة.</div></div>
     <div class="input-area">
-        <div class="input-wrapper">
-            <input type="file" id="fileIn" accept="image/*" style="display:none">
-            <button class="btn" onclick="document.getElementById('fileIn').click()">📷</button>
-            <input type="text" id="userIn" placeholder="اسأل نظام أحمد الذكي..." onkeypress="if(event.key==='Enter') sendMsg()">
-            <button class="btn" onclick="sendMsg()">إرسال 🚀</button>
-        </div>
+        <input type="file" id="fileIn" accept="image/*" style="display:none">
+        <button onclick="document.getElementById('fileIn').click()">📷</button>
+        <input type="text" id="userIn" placeholder="اكتب هنا...">
+        <button onclick="sendMsg()">إرسال</button>
     </div>
-    <script>
-        // تم تحديث المفتاح بنجاح يا أحمد
-        const API_KEY = "AIzaSyA6nUHdVcngX20Wjimb5iRGMA_t4InNjuw"; 
 
+    <script>
+        const API_KEY = "AIzaSyA6nUHdVcngX20Wjimb5iRGMA_t4InNjuw";
+        
         async function sendMsg() {
             const input = document.getElementById('userIn');
             const fileInput = document.getElementById('fileIn');
             const chat = document.getElementById('chat');
             const text = input.value.trim();
+            
             if(!text && !fileInput.files[0]) return;
-            chat.innerHTML += `<div class="msg user"><b>أنت:</b> ${text}</div>`;
+            chat.innerHTML += `<div class="msg user">${text}</div>`;
             input.value = "";
-            chat.scrollTop = chat.scrollHeight;
+
             try {
-                let bodyData;
+                let parts = [{ text: "أنت نظام سيادي من تطوير أحمد. أجب على: " + text }];
                 if (fileInput.files[0]) {
                     const base64 = await toBase64(fileInput.files[0]);
-                    bodyData = { contents: [{ parts: [
-                        { text: "أنت نظام سيادي فخم من تطوير أحمد. حلل هذه الصورة وأجب: " + text },
-                        { inline_data: { mime_type: fileInput.files[0].type, data: base64.split(',')[1] } }
-                    ]}]};
-                } else {
-                    bodyData = { contents: [{ parts: [{ text: "أنت نظام سيادي فخم من تطوير المبرمج أحمد. أجب على: " + text }] }] };
+                    parts.push({ inline_data: { mime_type: fileInput.files[0].type, data: base64.split(',')[1] } });
                 }
+
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
-                    method: "POST", headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(bodyData)
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ contents: [{ parts: parts }] })
                 });
+
                 const data = await response.json();
                 const reply = data.candidates[0].content.parts[0].text;
-                chat.innerHTML += `<div class="msg bot"><b>Super_al:</b> ${reply}</div>`;
-                fileInput.value = "";
-            } catch (e) { chat.innerHTML += `<div class="msg bot" style="background:#b71c1c;">حدث خطأ. تأكد من إعدادات المفتاح.</div>`; }
+                chat.innerHTML += `<div class="msg bot">${reply}</div>`;
+            } catch (e) {
+                chat.innerHTML += `<div class="msg bot" style="background:red;">خطأ! تأكد من تفعيل المفتاح في Google AI Studio.</div>`;
+            }
             chat.scrollTop = chat.scrollHeight;
         }
+
         const toBase64 = file => new Promise((resolve, reject) => {
-            const reader = new FileReader(); reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error);
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
         });
     </script>
 </body>
