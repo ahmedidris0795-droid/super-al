@@ -15,79 +15,62 @@
         .input-wrapper { display: flex; width: 100%; max-width: 900px; gap: 10px; align-items: center; }
         input { flex: 1; padding: 15px; border-radius: 12px; border: 1px solid #444; background: #111; color: white; outline: none; }
         .btn { background: #6200ea; color: white; border: none; padding: 12px 20px; border-radius: 12px; cursor: pointer; font-weight: bold; }
-        #imageBtn { background: #333; font-size: 20px; }
     </style>
 </head>
 <body>
     <div class="header">
         <h2 style="margin:0;">🛡️ SUPER_AL ULTRA</h2>
-        <small style="color:#888;">نظام الذكاء العالمي - مطور بواسطة أحمد</small>
+        <small style="color:#888;">نظام الذكاء العالمي - مطور بواسطة العبقري أحمد</small>
     </div>
-    
     <div id="chat">
-        <div class="msg bot">مرحباً بك في الإصدار الأسطوري. أنا Super_al، أذكى نظام في العالم. أرسل لي سؤالاً أو صورة وسأبهرك بذكاء أحمد!</div>
+        <div class="msg bot">مرحباً بك في عالم أحمد. أنا Super_al Ultra، أقوى ذكاء اصطناعي الآن. أرسل لي أي شيء أو صورة وسأحللها لك فوراً!</div>
     </div>
-
     <div class="input-area">
         <div class="input-wrapper">
             <input type="file" id="fileIn" accept="image/*" style="display:none">
-            <button class="btn" id="imageBtn" onclick="document.getElementById('fileIn').click()">📷</button>
-            <input type="text" id="userIn" placeholder="اسأل أقوى ذكاء في العالم..." onkeypress="if(event.key==='Enter') sendMsg()">
+            <button class="btn" onclick="document.getElementById('fileIn').click()">📷</button>
+            <input type="text" id="userIn" placeholder="اسأل نظام أحمد الذكي..." onkeypress="if(event.key==='Enter') sendMsg()">
             <button class="btn" onclick="sendMsg()">إرسال 🚀</button>
         </div>
     </div>
-
     <script>
-        // ملاحظة: استبدل هذا المفتاح بمفتاح جديد إذا استمر الخطأ
-        const API_KEY = "AIzaSyDSV9IUdtNn_in6SfL1zFKKPtZIlUVHUHo"; 
+        // تم تحديث المفتاح بنجاح يا أحمد
+        const API_KEY = "AIzaSyA6nUHdVcngX20Wjimb5iRGMA_t4InNjuw"; 
 
         async function sendMsg() {
             const input = document.getElementById('userIn');
             const fileInput = document.getElementById('fileIn');
             const chat = document.getElementById('chat');
             const text = input.value.trim();
-            
             if(!text && !fileInput.files[0]) return;
-
             chat.innerHTML += `<div class="msg user"><b>أنت:</b> ${text}</div>`;
             input.value = "";
             chat.scrollTop = chat.scrollHeight;
-
             try {
                 let bodyData;
                 if (fileInput.files[0]) {
                     const base64 = await toBase64(fileInput.files[0]);
-                    bodyData = {
-                        contents: [{ parts: [
-                            { text: "أنت نظام سيادي فخم من تطوير أحمد. حلل هذه الصورة وأجب: " + text },
-                            { inline_data: { mime_type: fileInput.files[0].type, data: base64.split(',')[1] } }
-                        ]}]
-                    };
+                    bodyData = { contents: [{ parts: [
+                        { text: "أنت نظام سيادي فخم من تطوير أحمد. حلل هذه الصورة وأجب: " + text },
+                        { inline_data: { mime_type: fileInput.files[0].type, data: base64.split(',')[1] } }
+                    ]}]};
                 } else {
-                    bodyData = { contents: [{ parts: [{ text: "أنت نظام سيادي فخم من تطوير أحمد. أجب على: " + text }] }] };
+                    bodyData = { contents: [{ parts: [{ text: "أنت نظام سيادي فخم من تطوير المبرمج أحمد. أجب على: " + text }] }] };
                 }
-
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    method: "POST", headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(bodyData)
                 });
-
                 const data = await response.json();
                 const reply = data.candidates[0].content.parts[0].text;
                 chat.innerHTML += `<div class="msg bot"><b>Super_al:</b> ${reply}</div>`;
-                fileInput.value = ""; // تفريغ الصورة بعد الإرسال
-            } catch (e) { 
-                chat.innerHTML += `<div class="msg bot" style="background:#b71c1c;">خطأ: تأكد من صلاحية المفتاح (API Key) الخاص بك.</div>`; 
-            }
+                fileInput.value = "";
+            } catch (e) { chat.innerHTML += `<div class="msg bot" style="background:#b71c1c;">حدث خطأ. تأكد من إعدادات المفتاح.</div>`; }
             chat.scrollTop = chat.scrollHeight;
         }
-
         const toBase64 = file => new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = error => reject(error);
+            const reader = new FileReader(); reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result); reader.onerror = error => reject(error);
         });
     </script>
 </body>
