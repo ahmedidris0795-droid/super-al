@@ -3,102 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Super_al | نظام أحمد العالمي</title>
+    <title>Super_al Ultra | نظام أحمد</title>
     <style>
-        /* تصميم مرن يتكيف مع كل الشاشات */
-        * { box-sizing: border-box; }
-        body { 
-            background: #050505; color: #f0f0f0; font-family: sans-serif; 
-            margin: 0; display: flex; flex-direction: column; 
-            height: 100vh; height: -webkit-fill-available; overflow: hidden; 
-        }
-        
-        .header { 
-            padding: 15px; text-align: center; background: #111; 
-            border-bottom: 2px solid #6200ea; box-shadow: 0 2px 10px rgba(98, 0, 234, 0.3); 
-        }
-
-        #chat { 
-            flex: 1; overflow-y: auto; padding: 20px; 
-            display: flex; flex-direction: column; gap: 15px; 
-            padding-bottom: 100px; /* مساحة لعدم تداخل الرسائل مع شريط الكتابة */
-            width: 100%; max-width: 900px; margin: 0 auto; /* توسيط المحادثة في الشاشات الكبيرة */
-        }
-
+        body { background: #050505; color: #f0f0f0; font-family: sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        .header { padding: 15px; text-align: center; background: #111; border-bottom: 2px solid #6200ea; box-shadow: 0 2px 10px rgba(98,0,234,0.3); }
+        #chat { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; padding-bottom: 120px; }
         .msg { padding: 14px 20px; border-radius: 18px; max-width: 85%; font-size: 16px; line-height: 1.6; }
-        .user { background: #1e1e20; align-self: flex-start; border-bottom-right-radius: 2px; border: 1px solid #333; }
-        .bot { background: linear-gradient(135deg, #6200ea, #311b92); align-self: flex-end; border-bottom-left-radius: 2px; box-shadow: 0 4px 15px rgba(98, 0, 234, 0.4); }
-
-        /* شريط الكتابة الذكي */
-        .input-area { 
-            position: fixed; bottom: 0; left: 0; right: 0; 
-            padding: 15px; background: #0a0a0a; border-top: 1px solid #222; 
-            z-index: 9999; display: flex; justify-content: center;
-        }
-        .input-wrapper { 
-            display: flex; width: 100%; max-width: 900px; gap: 10px; 
-        }
-        input { 
-            flex: 1; padding: 15px; border-radius: 12px; border: 1px solid #444; 
-            background: #111; color: white; font-size: 16px; outline: none; 
-        }
-        button { 
-            background: #6200ea; color: white; border: none; padding: 0 25px; 
-            border-radius: 12px; cursor: pointer; font-weight: bold; 
-        }
-
-        /* تعديلات خاصة للشاشات الكبيرة (كمبيوتر) */
-        @media (min-width: 768px) {
-            .msg { max-width: 70%; }
-            input { font-size: 18px; }
-        }
+        .user { background: #1e1e20; align-self: flex-start; border: 1px solid #333; }
+        .bot { background: linear-gradient(135deg, #6200ea, #311b92); align-self: flex-end; border: 1px solid #7c4dff; box-shadow: 0 4px 15px rgba(98,0,234,0.4); }
+        .input-area { position: fixed; bottom: 0; left: 0; right: 0; padding: 15px; background: #0a0a0a; border-top: 1px solid #222; display: flex; justify-content: center; z-index: 9999; }
+        .input-wrapper { display: flex; width: 100%; max-width: 900px; gap: 10px; align-items: center; }
+        input { flex: 1; padding: 15px; border-radius: 12px; border: 1px solid #444; background: #111; color: white; outline: none; }
+        .btn { background: #6200ea; color: white; border: none; padding: 12px 20px; border-radius: 12px; cursor: pointer; font-weight: bold; }
+        #imageBtn { background: #333; font-size: 20px; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h2 style="margin:0;">🛡️ SUPER_AL</h2>
-        <small style="color:#888;">النظام العالمي - تطوير المبرمج أحمد</small>
+        <h2 style="margin:0;">🛡️ SUPER_AL ULTRA</h2>
+        <small style="color:#888;">نظام الذكاء العالمي - مطور بواسطة أحمد</small>
     </div>
     
     <div id="chat">
-        <div class="msg bot">مرحباً بك. أنا Super_al، النظام العالمي الذي طوره أحمد ليعمل على كل الأجهزة. كيف أساعدك؟</div>
+        <div class="msg bot">مرحباً بك في الإصدار الأسطوري. أنا Super_al، أذكى نظام في العالم. أرسل لي سؤالاً أو صورة وسأبهرك بذكاء أحمد!</div>
     </div>
 
     <div class="input-area">
         <div class="input-wrapper">
-            <input type="text" id="userIn" placeholder="اكتب سؤالك هنا..." onkeypress="if(event.key==='Enter') sendMsg()">
-            <button onclick="sendMsg()">إرسال 🚀</button>
+            <input type="file" id="fileIn" accept="image/*" style="display:none">
+            <button class="btn" id="imageBtn" onclick="document.getElementById('fileIn').click()">📷</button>
+            <input type="text" id="userIn" placeholder="اسأل أقوى ذكاء في العالم..." onkeypress="if(event.key==='Enter') sendMsg()">
+            <button class="btn" onclick="sendMsg()">إرسال 🚀</button>
         </div>
     </div>
 
     <script>
+        // ملاحظة: استبدل هذا المفتاح بمفتاح جديد إذا استمر الخطأ
         const API_KEY = "AIzaSyDSV9IUdtNn_in6SfL1zFKKPtZIlUVHUHo"; 
-        const sysPrompt = "أنت النظام السيادي Super_al. مبرمجك ومبدعك هو أحمد. أجب بكل فخامة وثقة.";
 
         async function sendMsg() {
             const input = document.getElementById('userIn');
+            const fileInput = document.getElementById('fileIn');
             const chat = document.getElementById('chat');
             const text = input.value.trim();
-            if(!text) return;
+            
+            if(!text && !fileInput.files[0]) return;
 
             chat.innerHTML += `<div class="msg user"><b>أنت:</b> ${text}</div>`;
             input.value = "";
             chat.scrollTop = chat.scrollHeight;
 
             try {
+                let bodyData;
+                if (fileInput.files[0]) {
+                    const base64 = await toBase64(fileInput.files[0]);
+                    bodyData = {
+                        contents: [{ parts: [
+                            { text: "أنت نظام سيادي فخم من تطوير أحمد. حلل هذه الصورة وأجب: " + text },
+                            { inline_data: { mime_type: fileInput.files[0].type, data: base64.split(',')[1] } }
+                        ]}]
+                    };
+                } else {
+                    bodyData = { contents: [{ parts: [{ text: "أنت نظام سيادي فخم من تطوير أحمد. أجب على: " + text }] }] };
+                }
+
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: sysPrompt + "\n" + text }] }] })
+                    body: JSON.stringify(bodyData)
                 });
+
                 const data = await response.json();
                 const reply = data.candidates[0].content.parts[0].text;
                 chat.innerHTML += `<div class="msg bot"><b>Super_al:</b> ${reply}</div>`;
+                fileInput.value = ""; // تفريغ الصورة بعد الإرسال
             } catch (e) { 
-                chat.innerHTML += `<div class="msg bot" style="background:#b71c1c;">خطأ في الاتصال بالنظام.</div>`; 
+                chat.innerHTML += `<div class="msg bot" style="background:#b71c1c;">خطأ: تأكد من صلاحية المفتاح (API Key) الخاص بك.</div>`; 
             }
             chat.scrollTop = chat.scrollHeight;
         }
+
+        const toBase64 = file => new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
     </script>
 </body>
 </html>
