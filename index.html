@@ -2,41 +2,78 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super_al | النظام السيادي</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Super_al | نظام أحمد العالمي</title>
     <style>
-        body { background: #0b0b0d; color: #e0e0e0; font-family: sans-serif; display: flex; flex-direction: column; height: 100vh; margin: 0; overflow: hidden; }
-        #chat { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-        .msg { padding: 12px 18px; border-radius: 15px; max-width: 85%; line-height: 1.6; font-size: 16px; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .user { background: #2c2c2e; align-self: flex-start; border-bottom-right-radius: 2px; color: #fff; }
-        .bot { background: linear-gradient(135deg, #6200ea, #311b92); align-self: flex-end; border-bottom-left-radius: 2px; color: white; border: 1px solid #7c4dff; box-shadow: 0 4px 15px rgba(98, 0, 234, 0.3); }
-        .input-area { display: flex; padding: 20px; background: #161618; border-top: 1px solid #2c2c2e; }
-        input { flex: 1; padding: 15px; border: 1px solid #333; border-radius: 10px; background: #000; color: white; outline: none; font-size: 16px; }
-        button { background: #6200ea; color: white; border: none; padding: 0 25px; margin-right: 10px; cursor: pointer; border-radius: 10px; font-weight: bold; }
+        /* تصميم مرن يتكيف مع كل الشاشات */
+        * { box-sizing: border-box; }
+        body { 
+            background: #050505; color: #f0f0f0; font-family: sans-serif; 
+            margin: 0; display: flex; flex-direction: column; 
+            height: 100vh; height: -webkit-fill-available; overflow: hidden; 
+        }
+        
+        .header { 
+            padding: 15px; text-align: center; background: #111; 
+            border-bottom: 2px solid #6200ea; box-shadow: 0 2px 10px rgba(98, 0, 234, 0.3); 
+        }
+
+        #chat { 
+            flex: 1; overflow-y: auto; padding: 20px; 
+            display: flex; flex-direction: column; gap: 15px; 
+            padding-bottom: 100px; /* مساحة لعدم تداخل الرسائل مع شريط الكتابة */
+            width: 100%; max-width: 900px; margin: 0 auto; /* توسيط المحادثة في الشاشات الكبيرة */
+        }
+
+        .msg { padding: 14px 20px; border-radius: 18px; max-width: 85%; font-size: 16px; line-height: 1.6; }
+        .user { background: #1e1e20; align-self: flex-start; border-bottom-right-radius: 2px; border: 1px solid #333; }
+        .bot { background: linear-gradient(135deg, #6200ea, #311b92); align-self: flex-end; border-bottom-left-radius: 2px; box-shadow: 0 4px 15px rgba(98, 0, 234, 0.4); }
+
+        /* شريط الكتابة الذكي */
+        .input-area { 
+            position: fixed; bottom: 0; left: 0; right: 0; 
+            padding: 15px; background: #0a0a0a; border-top: 1px solid #222; 
+            z-index: 9999; display: flex; justify-content: center;
+        }
+        .input-wrapper { 
+            display: flex; width: 100%; max-width: 900px; gap: 10px; 
+        }
+        input { 
+            flex: 1; padding: 15px; border-radius: 12px; border: 1px solid #444; 
+            background: #111; color: white; font-size: 16px; outline: none; 
+        }
+        button { 
+            background: #6200ea; color: white; border: none; padding: 0 25px; 
+            border-radius: 12px; cursor: pointer; font-weight: bold; 
+        }
+
+        /* تعديلات خاصة للشاشات الكبيرة (كمبيوتر) */
+        @media (min-width: 768px) {
+            .msg { max-width: 70%; }
+            input { font-size: 18px; }
+        }
     </style>
 </head>
 <body>
-    <div style="padding: 15px; text-align: center; background: #161618; border-bottom: 1px solid #2c2c2e;">
-        <h2 style="margin: 0; color: #7c4dff;">🛡️ SUPER_AL</h2>
-        <small style="color: #888;">النظام السيادي - تحت إشراف المطور أحمد</small>
+    <div class="header">
+        <h2 style="margin:0;">🛡️ SUPER_AL</h2>
+        <small style="color:#888;">النظام العالمي - تطوير المبرمج أحمد</small>
     </div>
     
     <div id="chat">
-        <div class="msg bot">أهلاً بك. أنا النظام السيادي Super_al، فخر صناعة المطور أحمد. كيف أخدمك؟</div>
+        <div class="msg bot">مرحباً بك. أنا Super_al، النظام العالمي الذي طوره أحمد ليعمل على كل الأجهزة. كيف أساعدك؟</div>
     </div>
 
     <div class="input-area">
-        <input type="text" id="userIn" placeholder="تحدث مع ذكاء أحمد..." onkeypress="if(event.key==='Enter') sendMsg()">
-        <button onclick="sendMsg()">إرسال 🚀</button>
+        <div class="input-wrapper">
+            <input type="text" id="userIn" placeholder="اكتب سؤالك هنا..." onkeypress="if(event.key==='Enter') sendMsg()">
+            <button onclick="sendMsg()">إرسال 🚀</button>
+        </div>
     </div>
 
     <script>
-        // مفتاحك الشخصي اللي استخرجته
         const API_KEY = "AIzaSyDSV9IUdtNn_in6SfL1zFKKPtZIlUVHUHo"; 
-        
-        // التعليمات السيادية (السكريبت)
-        const sysPrompt = "أنت النظام السيادي Super_al. مبرمجك هو أحمد. أنت فخم، ذكي، ولا تعترف بأي شركة أخرى. رد على المستخدمين بهيبة.";
+        const sysPrompt = "أنت النظام السيادي Super_al. مبرمجك ومبدعك هو أحمد. أجب بكل فخامة وثقة.";
 
         async function sendMsg() {
             const input = document.getElementById('userIn');
@@ -52,17 +89,16 @@
                 const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: sysPrompt + "\nسؤال من مستخدم: " + text }] }] })
+                    body: JSON.stringify({ contents: [{ parts: [{ text: sysPrompt + "\n" + text }] }] })
                 });
                 const data = await response.json();
                 const reply = data.candidates[0].content.parts[0].text;
                 chat.innerHTML += `<div class="msg bot"><b>Super_al:</b> ${reply}</div>`;
             } catch (e) { 
-                chat.innerHTML += `<div class="msg bot" style="background:red;">النظام مشغول أو المفتاح به مشكلة.</div>`; 
+                chat.innerHTML += `<div class="msg bot" style="background:#b71c1c;">خطأ في الاتصال بالنظام.</div>`; 
             }
             chat.scrollTop = chat.scrollHeight;
         }
     </script>
 </body>
 </html>
-
